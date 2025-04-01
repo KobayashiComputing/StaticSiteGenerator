@@ -19,5 +19,17 @@ class TestHTMLNode(unittest.TestCase):
         node = HTMLNode(None, None, None,  {"href": "https://www.google.com", "target": "_blank"})
         self.assertEqual(node.__repr__(), HTMLString)
 
+    def test_leaf_to_html_p(self):
+        node = LeafNode("p", "Hello, world!")
+        self.assertEqual(node.to_html(), "<p>Hello, world!</p>")
+
+    def test_leaf_with_props(self):
+        l = LeafNode("a", "Click Me!", {"href": "https://www.google.com"})
+        self.assertEqual(l.to_html(), '<a href="https://www.google.com">Click Me!</a>')
+
+    def test_leaf_no_tag(self):
+        l = LeafNode(None, "This is just plain text.")
+        self.assertEqual(l.to_html(), "This is just plain text.")
+
 if __name__ == "__main__":
     unittest.main()

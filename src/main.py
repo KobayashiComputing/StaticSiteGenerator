@@ -13,4 +13,12 @@ def main():
     print(h1.__repr__())
     print(f"attributes are: {h1.props_to_html()}")
 
+    l1 = LeafNode("p", "This is a paragraph of text")
+    print(l1.to_html())
+    l2 = LeafNode("a", "Click Me!", {"href": "https://www.google.com"})
+    print(l2.to_html())
+    
+
+
+
 main()

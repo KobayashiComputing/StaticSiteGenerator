@@ -17,6 +17,11 @@ def main():
     print(l1.to_html())
     l2 = LeafNode("a", "Click Me!", {"href": "https://www.google.com"})
     print(l2.to_html())
+
+    child_list = [l1, l2]
+    p1 = ParentNode("div", child_list, {"id": "front_page", "class": "main_window"})
+    print(p1.to_html())
+
     
 
 

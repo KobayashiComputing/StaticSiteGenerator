@@ -22,8 +22,26 @@ def main():
     p1 = ParentNode("div", child_list, {"id": "front_page", "class": "main_window"})
     print(p1.to_html())
 
-    
+    child_node = LeafNode("span", "child")
+    parent_node = ParentNode("div", [child_node])
+    print(f"{parent_node.to_html()} should be: <div><span>child</span></div>")
 
+    grandchild_node = LeafNode("b", "grandchild")
+    child_node = ParentNode("span", [grandchild_node])
+    parent_node = ParentNode("div", [child_node])
+    print(f"{parent_node.to_html()} should be: <div><span><b>grandchild</b></span></div>")
+    
+    node = ParentNode(
+        "p",
+        [
+            LeafNode("b", "Bold text"),
+            LeafNode(None, "Normal text"),
+            LeafNode("i", "italic text"),
+            LeafNode(None, "Normal text"),
+        ],
+    )
+
+    print(f"{node.to_html()}")
 
 
 main()

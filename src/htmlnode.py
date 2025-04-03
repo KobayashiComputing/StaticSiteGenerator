@@ -43,6 +43,12 @@ class ParentNode(HTMLNode):
             raise ValueError("Missing 'tag' property....")
         if self.children == None:
             raise ValueError("Missing 'children' property...")
-        return f"<{self.tag}{self.props_to_html()}>{', '.join(map(str, list(self.children)))}</{self.tag}>"
+        html = ""
+        for child in self.children:
+            html += child.to_html()
+
+        # html_out = f"<{self.tag}{self.props_to_html()}>{', '.join(map(str, list(self.children)))}</{self.tag}>"
+        html_out = f"<{self.tag}{self.props_to_html()}>{html}</{self.tag}>"
+        return html_out
         
         

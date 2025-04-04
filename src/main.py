@@ -43,5 +43,10 @@ def main():
 
     print(f"{node.to_html()}")
 
+    node = TextNode("This is a text node", TextType.NORMAL_TEXT)
+    html_node = node.to_html_node()
+    print(f"{html_node.tag} should equal {None}")
+    print(f"{html_node.value} should equal 'This is a text node'")
+
 
 main()

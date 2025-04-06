@@ -48,5 +48,7 @@ def main():
     print(f"{html_node.tag} should equal {None}")
     print(f"{html_node.value} should equal 'This is a text node'")
 
+    node = TextNode("This is text with a `code block` word", TextType.NORMAL_TEXT)
+    new_nodes = split_nodes_delimiter([node], "`", TextType.CODE_TEXT)
 
 main()

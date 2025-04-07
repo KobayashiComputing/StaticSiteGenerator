@@ -50,5 +50,23 @@ def main():
 
     node = TextNode("This is text with a `code block` word", TextType.NORMAL_TEXT)
     new_nodes = split_nodes_delimiter([node], "`", TextType.CODE_TEXT)
+    check_nodes = [TextNode("This is text with a ", TextType.NORMAL_TEXT), TextNode("code block", TextType.CODE_TEXT), TextNode(" word", TextType.NORMAL_TEXT)]
+    print(f"new_nodes  : {new_nodes}")
+    print(f"check_nodes: {check_nodes}")
+
+    node = TextNode("This is text with a `code block` here and a `code block` there.", TextType.NORMAL_TEXT)
+    new_nodes = split_nodes_delimiter([node], "`", TextType.CODE_TEXT)
+    check_nodes = [TextNode("This is text with a ", TextType.NORMAL_TEXT), TextNode("code block", TextType.CODE_TEXT), TextNode(" here and a ", TextType.NORMAL_TEXT), TextNode("code block", TextType.CODE_TEXT), TextNode(" there.", TextType.NORMAL_TEXT)]
+    print(f"new_nodes  : {new_nodes.__repr__()}")
+    print(f"check_nodes: {check_nodes.__repr__()}")
+
+    node = TextNode("This is text with no code blocks at all!", TextType.NORMAL_TEXT)
+    new_nodes = split_nodes_delimiter([node], "`", TextType.CODE_TEXT)
+    check_nodes = [TextNode("This is text with no code blocks at all!", TextType.NORMAL_TEXT)]
+    print(f"new_nodes  : {new_nodes.__repr__()}")
+    print(f"check_nodes: {check_nodes.__repr__()}")
+
+    # node = TextNode("This is text with a `broken code block word", TextType.NORMAL_TEXT)
+    # new_nodes = split_nodes_delimiter([node], "`", TextType.CODE_TEXT)
 
 main()

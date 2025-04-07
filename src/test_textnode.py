@@ -29,6 +29,62 @@ class TestTextNode(unittest.TestCase):
         html_node = node.to_html_node()
         self.assertEqual(html_node.tag, None)
         self.assertEqual(html_node.value, "This is a text node")
+    
+    def test_delimiter_for_code(self):
+        node = TextNode("This is text with a `code block` word", TextType.NORMAL_TEXT)
+        new_nodes = split_nodes_delimiter([node], "`", TextType.CODE_TEXT)
+        check_nodes = [TextNode("This is text with a ", TextType.NORMAL_TEXT), TextNode("code block", TextType.CODE_TEXT), TextNode(" word", TextType.NORMAL_TEXT)]
+        self.assertEqual(new_nodes, check_nodes)
+
+    def test_delimiter_for_code_2(self):
+        node = TextNode("This is text with a `code block` here and a `code block` there.", TextType.NORMAL_TEXT)
+        new_nodes = split_nodes_delimiter([node], "`", TextType.CODE_TEXT)
+        check_nodes = [TextNode("This is text with a ", TextType.NORMAL_TEXT), TextNode("code block", TextType.CODE_TEXT), TextNode(" here and a ", TextType.NORMAL_TEXT), TextNode("code block", TextType.CODE_TEXT), TextNode(" there.", TextType.NORMAL_TEXT)]
+        self.assertEqual(new_nodes, check_nodes)
+    
+    def test_delimiter_for_code_3(self):
+        node = TextNode("This is text with no code blocks at all!", TextType.NORMAL_TEXT)
+        new_nodes = split_nodes_delimiter([node], "`", TextType.CODE_TEXT)
+        check_nodes = [TextNode("This is text with no code blocks at all!", TextType.NORMAL_TEXT)]
+        self.assertEqual(new_nodes, check_nodes)
+
+    def test_delimiter_for_bold(self):
+        node = TextNode("This is text with a **bold** word", TextType.NORMAL_TEXT)
+        new_nodes = split_nodes_delimiter([node], "**", TextType.BOLD_TEXT)
+        check_nodes = [TextNode("This is text with a ", TextType.NORMAL_TEXT), TextNode("bold", TextType.BOLD_TEXT), TextNode(" word", TextType.NORMAL_TEXT)]
+        self.assertEqual(new_nodes, check_nodes)
+
+    def test_delimiter_for_bold_2(self):
+        node = TextNode("This is text with a **bold** word here and a **bold** word there.", TextType.NORMAL_TEXT)
+        new_nodes = split_nodes_delimiter([node], "**", TextType.BOLD_TEXT)
+        check_nodes = [TextNode("This is text with a ", TextType.NORMAL_TEXT), TextNode("bold", TextType.BOLD_TEXT), TextNode(" word here and a ", TextType.NORMAL_TEXT), TextNode("bold", TextType.BOLD_TEXT), TextNode(" word there.", TextType.NORMAL_TEXT)]
+        self.assertEqual(new_nodes, check_nodes)
+    
+    def test_delimiter_for_bold_3(self):
+        node = TextNode("This is text with no bold words at all!", TextType.NORMAL_TEXT)
+        new_nodes = split_nodes_delimiter([node], "**", TextType.BOLD_TEXT)
+        check_nodes = [TextNode("This is text with no bold words at all!", TextType.NORMAL_TEXT)]
+        self.assertEqual(new_nodes, check_nodes)
+
+    def test_delimiter_for_italic(self):
+        node = TextNode("This is text with an _italic_ word", TextType.NORMAL_TEXT)
+        new_nodes = split_nodes_delimiter([node], "_", TextType.ITALIC_TEXT)
+        check_nodes = [TextNode("This is text with an ", TextType.NORMAL_TEXT), TextNode("italic", TextType.ITALIC_TEXT), TextNode(" word", TextType.NORMAL_TEXT)]
+        self.assertEqual(new_nodes, check_nodes)
+
+    def test_delimiter_for_italic_2(self):
+        node = TextNode("This is text with an _italic_ word here and an _italic_ word there.", TextType.NORMAL_TEXT)
+        new_nodes = split_nodes_delimiter([node], "_", TextType.ITALIC_TEXT)
+        check_nodes = [TextNode("This is text with an ", TextType.NORMAL_TEXT), TextNode("italic", TextType.ITALIC_TEXT), TextNode(" word here and an ", TextType.NORMAL_TEXT), TextNode("italic", TextType.ITALIC_TEXT), TextNode(" word there.", TextType.NORMAL_TEXT)]
+        self.assertEqual(new_nodes, check_nodes)
+    
+    def test_delimiter_for_italic_3(self):
+        node = TextNode("This is text with no italic words at all!", TextType.NORMAL_TEXT)
+        new_nodes = split_nodes_delimiter([node], "_", TextType.ITALIC_TEXT)
+        check_nodes = [TextNode("This is text with no italic words at all!", TextType.NORMAL_TEXT)]
+        self.assertEqual(new_nodes, check_nodes)
+
+
 
 
 

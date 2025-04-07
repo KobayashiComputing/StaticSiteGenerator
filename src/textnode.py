@@ -58,5 +58,28 @@ def text_node_to_html_node(text_node):
     raise ValueError(f"invalid text type: {text_node.text_type}")
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
-    new_nodes = old_nodes
+    new_nodes = []
+    if text_type == TextType.CODE_TEXT or text_type == TextType.BOLD_TEXT or text_type == TextType.ITALIC_TEXT:
+        for node in old_nodes:
+            if node.text_type != TextType.NORMAL_TEXT:
+                new_nodes.append(node)
+                continue
+            chunks = node.text.split(delimiter)
+            # chunk_count = len(chunks)
+            # if the count of chunks is even, there is a mismatched delimiter
+            if len(chunks) % 2 == 0:
+                raise Exception(f"Unmatched delimiter {delimiter} in '{node.text}'")
+            else:
+                for ndx in range(len(chunks)):
+                    if chunks[ndx] == "":
+                        continue
+                    if ndx % 2 == 0:
+                        new_nodes.extend([TextNode(text=chunks[ndx], text_type=TextType.NORMAL_TEXT)])
+                    else:
+                        new_nodes.extend([TextNode(text=chunks[ndx], text_type=text_type)])
+                pass
+            pass
+    else:
+        new_nodes.extend(old_nodes)
+
     return new_nodes

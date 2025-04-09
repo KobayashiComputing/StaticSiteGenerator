@@ -1,5 +1,6 @@
 from textnode import *
 from htmlnode import *
+from extractors import *
 
 
 def main():
@@ -68,5 +69,9 @@ def main():
 
     # node = TextNode("This is text with a `broken code block word", TextType.TEXT)
     # new_nodes = split_nodes_delimiter([node], "`", TextType.CODE)
+
+    image_list = extract_markdown_images("this is a test")
+    link_list = extract_markdown_links("this is a test")
+    
 
 main()

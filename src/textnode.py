@@ -1,5 +1,6 @@
 from enum import Enum
 from htmlnode import *
+from extractors import *
 
 class TextType(Enum):
     TEXT = "text"
@@ -75,4 +76,30 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
                 else:
                     new_nodes.extend([TextNode(text=chunks[ndx], text_type=text_type)])
 
+    return new_nodes
+
+def split_nodes_image(old_nodes):
+    new_nodes = []
+    inodes = []
+    for node in old_nodes:
+        if node.text_type != TextType.TEXT:
+            new_nodes.append(node)
+            continue
+        images = extract_markdown_images(node.text)
+        for image in images:
+            inodes.append(TextNode(text=image[0], text_type=TextType.IMAGE, url=image[1]))
+            pass
+        new_text = node.text
+        for inode in inodes:
+            sections = new_text.split(f"![{inode.text}]({inode.url})", 1)
+            new_nodes.append(TextNode(text=sections[0], text_type=TextType.TEXT))
+            new_nodes.append(inode)
+            new_text = sections[1]
+        if new_text != "":
+            new_nodes.append(TextNode(text=new_text, text_type=TextType.TEXT))
+
+    return new_nodes
+
+def split_nodes_link(old_nodes):
+    new_nodes = []
     return new_nodes

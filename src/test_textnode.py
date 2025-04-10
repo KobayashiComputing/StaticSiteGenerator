@@ -84,6 +84,54 @@ class TestTextNode(unittest.TestCase):
         check_nodes = [TextNode("This is text with no italic words at all!", TextType.TEXT)]
         self.assertEqual(new_nodes, check_nodes)
 
+    def test_split_nodes_image_1(self):
+        node = TextNode(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)",
+            TextType.TEXT
+        )
+        new_nodes = split_nodes_image([node])
+        self.assertListEqual(
+            [
+                TextNode("This is text with an ", TextType.TEXT),
+                TextNode("image", TextType.IMAGE, "https://i.imgur.com/zjjcJKZ.png")
+            ],
+            new_nodes
+        )
+
+    def test_split_nodes_image_2(self):
+        node = TextNode(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and ![another image](https://www.slowlanecafe.com/wp-content/uploads/Cyberpunk2077Redux-800x400-1.png)",
+            TextType.TEXT
+        )
+        new_nodes = split_nodes_image([node])
+        self.assertListEqual(
+            [
+                TextNode("This is text with an ", TextType.TEXT),
+                TextNode("image", TextType.IMAGE, "https://i.imgur.com/zjjcJKZ.png"),
+                TextNode(" and ", TextType.TEXT),
+                TextNode("another image", TextType.IMAGE, "https://www.slowlanecafe.com/wp-content/uploads/Cyberpunk2077Redux-800x400-1.png")
+            ],
+            new_nodes
+        )
+
+    def test_split_nodes_image_2_plus(self):
+        node = TextNode(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and ![another image](https://www.slowlanecafe.com/wp-content/uploads/Cyberpunk2077Redux-800x400-1.png) and then some additional text.",
+            TextType.TEXT
+        )
+        new_nodes = split_nodes_image([node])
+        self.assertListEqual(
+            [
+                TextNode("This is text with an ", TextType.TEXT),
+                TextNode("image", TextType.IMAGE, "https://i.imgur.com/zjjcJKZ.png"),
+                TextNode(" and ", TextType.TEXT),
+                TextNode("another image", TextType.IMAGE, "https://www.slowlanecafe.com/wp-content/uploads/Cyberpunk2077Redux-800x400-1.png"),
+                TextNode(" and then some additional text.", TextType.TEXT)
+            ],
+            new_nodes
+        )
+
+ 
 
 
 

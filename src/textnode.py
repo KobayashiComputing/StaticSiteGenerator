@@ -92,14 +92,36 @@ def split_nodes_image(old_nodes):
         new_text = node.text
         for inode in inodes:
             sections = new_text.split(f"![{inode.text}]({inode.url})", 1)
-            new_nodes.append(TextNode(text=sections[0], text_type=TextType.TEXT))
+            if len(sections) != 2:
+                raise ValueError("invalid markdown: image tag not complete")
+            if sections[0] != "":
+                new_nodes.append(TextNode(text=sections[0], text_type=TextType.TEXT))
             new_nodes.append(inode)
             new_text = sections[1]
         if new_text != "":
             new_nodes.append(TextNode(text=new_text, text_type=TextType.TEXT))
-
     return new_nodes
 
 def split_nodes_link(old_nodes):
     new_nodes = []
+    lnodes = []
+    for node in old_nodes:
+        if node.text_type != TextType.TEXT:
+            new_nodes.append(node)
+            continue
+        links = extract_markdown_links(node.text)
+        for link in links:
+            lnodes.append(TextNode(text=link[0], text_type=TextType.LINK, url=link[1]))
+            pass
+        new_text = node.text
+        for lnode in lnodes:
+            sections = new_text.split(f"[{lnode.text}]({lnode.url})", 1)
+            if len(sections) != 2:
+                raise ValueError("invalid markdown: link tag not complete")
+            if sections[0] != "":
+                new_nodes.append(TextNode(text=sections[0], text_type=TextType.TEXT))
+            new_nodes.append(lnode)
+            new_text = sections[1]
+        if new_text != "":
+            new_nodes.append(TextNode(text=new_text, text_type=TextType.TEXT))
     return new_nodes

@@ -81,5 +81,9 @@ def main():
     print(extract_markdown_links(text))
     # [("to boot dev", "https://www.boot.dev"), ("to youtube", "https://www.youtube.com/@bootdotdev")]
 
+    text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+    nodes = text_to_text_nodes(text)
+    print(f"Final nodes: {nodes}")
+    
 
 main()

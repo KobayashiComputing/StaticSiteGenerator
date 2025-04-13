@@ -15,8 +15,8 @@ class BlockType(Enum):
     HEADING = "heading"
     CODE = "code"
     QUOTE = "quote"
-    UNORDERED_LIST = "unordered_list"
-    ORDERED_LIST = "ordered_list"
+    ULIST = "ulist"
+    OLIST = "olist"
 
 
 def block_to_block_type(block):
@@ -31,6 +31,33 @@ def block_to_block_type(block):
     # It's a code block if it both starts and ends with "```"
     elif block[:3] == "```" and block[-3:] == "```":
         block_type = BlockType.CODE
+    
+    # It's a quote block if every line starts with a '>'
+    elif block[0] == '>':
+        block_type = BlockType.QUOTE
+        lines = block.splitlines()
+        for line in lines:
+            if line[0] != '>':
+                block_type = BlockType.PARAGRAPH
+
+    # It's an unordered list if every line starts with "- "
+    elif block[:2] == "- ":
+        block_type = BlockType.ULIST
+        lines = block.splitlines()
+        for line in lines:
+            if line[:2] != "- ":
+                block_type = BlockType.PARAGRAPH
+    
+    # It's an ordered list if the first line starts with "1. " and then increments
+    elif block[:3] == "1. ":
+        block_type = BlockType.OLIST
+        lines = block.splitlines()
+        counter = 0
+        for line in lines:
+            counter += 1
+            digit_count = len(f"{counter}".strip()) + 2
+            if line[:digit_count] != f"{counter}. ":
+                block_type = BlockType.PARAGRAPH
 
     # Anything else should be a plain paragraph...
     else:

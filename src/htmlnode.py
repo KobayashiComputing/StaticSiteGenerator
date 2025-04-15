@@ -44,6 +44,7 @@ class ParentNode(HTMLNode):
         if self.children == None:
             raise ValueError("Missing 'children' property...")
         html = ""
+        # TODO: if a child also has children, it's also a parent, so we need to handle that...
         for child in self.children:
             html += child.to_html()
 

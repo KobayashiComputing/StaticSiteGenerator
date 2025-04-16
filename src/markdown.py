@@ -72,9 +72,9 @@ def markdown_to_html_node(markdown):
     # and the blocks in the markdown become the children of the <div>
     div_children = []
     # break the markdown file into blocks, defined by two newlines in a row
-    blocks = markdown_to_blocks(markdown)
+    block_list = markdown_to_blocks(markdown)
     # each block of markdown becomes one of the six canonical types of html blocks
-    for block in blocks:
+    for block in block_list:
         # get the current block type, which will dictate how we handle this block
         block_type = block_to_block_type(block)
         match block_type:
@@ -83,12 +83,15 @@ def markdown_to_html_node(markdown):
                 # in HTML paragraph text, newlines are ignored, so convert them to spaces
                 block = block.replace('\n', ' ')
                 # next, break the block of text into text nodes
-                nodes = text_to_text_nodes(block)
+                node_list = text_to_text_nodes(block)
                 block_children = []
-                for node in nodes:
-                    # html_tree.append(text_node_to_html_node(node))
+                html = ""
+                for node in node_list:
+                    leaf_node = node.to_html_node()
+                    html += leaf_node.to_html()
+                    pass
                     block_children.append(node.to_html_node())
-                div_children.append([ParentNode(tag="p", children=block_children, props=None)])
+                div_children.append(LeafNode(tag="p", value=html, props=None))
                 pass
             case BlockType.HEADING:
                 pass

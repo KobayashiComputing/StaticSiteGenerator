@@ -91,8 +91,34 @@ def markdown_to_html_node(markdown):
                 div_children.append(LeafNode(tag="p", value=html, props=None))
                 pass
             case BlockType.HEADING:
+                # heading blocks *should* be only a single line, but, I presume, could
+                # contain **bold** or _italic_ or `code` parts, and get broken down into 
+                # leaf nodes... (text nodes...)
+                # do we need to remove newlines in the block?
+                block = block.replace('\n', ' ')
+                # we need to count the number of leading '#' to get the "h" level (h1 - h6)
+                # for the tag...
+                count = block.index(" ")
+                # count = 1 # for now...
+                block = (block.replace('#', '', count)).strip()
+                # next, break the block of text into text nodes
+                node_list = text_to_text_nodes(block)
+                html = ""
+                for node in node_list:
+                    leaf_node = node.to_html_node()
+                    html += leaf_node.to_html()
+                div_children.append(LeafNode(tag=f"h{count}", value=html, props=None))
                 pass
             case BlockType.CODE:
+                # code blocks get mostly left alone - just stripped of their delimieters
+                # but with no further changes
+                block = (block[3:])[:-3]
+                node = LeafNode(tag="code", value=block, props=None)
+                html = node.to_html()
+                div_children.append(LeafNode(tag="pre", value=html, props=None))
+
+
+
                 pass
             case BlockType.QUOTE:
                 pass

@@ -84,13 +84,10 @@ def markdown_to_html_node(markdown):
                 block = block.replace('\n', ' ')
                 # next, break the block of text into text nodes
                 node_list = text_to_text_nodes(block)
-                block_children = []
                 html = ""
                 for node in node_list:
                     leaf_node = node.to_html_node()
                     html += leaf_node.to_html()
-                    pass
-                    block_children.append(node.to_html_node())
                 div_children.append(LeafNode(tag="p", value=html, props=None))
                 pass
             case BlockType.HEADING:

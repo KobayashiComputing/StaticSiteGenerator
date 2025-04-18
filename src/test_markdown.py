@@ -142,10 +142,6 @@ This is the same paragraph on a new line
         block = "paragraph"
         self.assertEqual(block_to_block_type(block), BlockType.PARAGRAPH)
 
-    # def test_markdown_to_html_node(self):
-    #     md = ""
-    #     self.assertEqual(markdown_to_html_node(md), HTMLNode())
-
 
     def test_paragraphs(self):
         md = """This is **bolded** paragraph
@@ -208,6 +204,114 @@ the **same** even with inline stuff
             html,
             "<div><blockquote>This is a block quote. It has some <i>italic</i> text and some <b>bold</b> text that, I think, should be handled. I'm not sure if links and images should be handled. I'll write another test case with a link and/or an image.</blockquote></div>",
         )
+
+    def test_ulist_block(self):
+        md = """- This is an unordered list item...
+- This is an unordered list item...
+- This is an unordered list item...
+"""
+
+        node = markdown_to_html_node(md)
+        html = ""
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><ul><li>This is an unordered list item...</li><li>This is an unordered list item...</li><li>This is an unordered list item...</li></ul></div>",
+        )
+
+    def test_olist_block(self):
+        md = """1. line of ordered list
+2. line of ordered list
+3. line of ordered list
+4. line of ordered list
+5. line of ordered list
+6. line of ordered list
+7. line of ordered list
+8. line of ordered list
+9. line of ordered list
+10. line of ordered list
+11. line of ordered list
+12. line of ordered list
+"""
+
+        node = markdown_to_html_node(md)
+        html = ""
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><ol><li>line of ordered list</li><li>line of ordered list</li><li>line of ordered list</li><li>line of ordered list</li><li>line of ordered list</li><li>line of ordered list</li><li>line of ordered list</li><li>line of ordered list</li><li>line of ordered list</li><li>line of ordered list</li><li>line of ordered list</li><li>line of ordered list</li></ol></div>",
+        )
+
+    def test_paragraphs2(self):
+        md = """
+This is **bolded** paragraph
+text in a p
+tag here
+
+This is another paragraph with _italic_ text and `code` here
+
+"""
+
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><p>This is <b>bolded</b> paragraph text in a p tag here</p><p>This is another paragraph with <i>italic</i> text and <code>code</code> here</p></div>",
+        )
+
+    def test_lists(self):
+        md = """
+- This is a list
+- with items
+- and _more_ items
+
+1. This is an `ordered` list
+2. with items
+3. and more items
+
+"""
+
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><ul><li>This is a list</li><li>with items</li><li>and <i>more</i> items</li></ul><ol><li>This is an <code>ordered</code> list</li><li>with items</li><li>and more items</li></ol></div>",
+        )
+
+    def test_headings_2(self):
+        md = """
+# this is an h1
+
+this is paragraph text
+
+## this is an h2
+"""
+
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><h1>this is an h1</h1><p>this is paragraph text</p><h2>this is an h2</h2></div>",
+        )
+
+    def test_blockquote2(self):
+        md = """
+> This is a
+> blockquote block
+
+this is paragraph text
+
+"""
+
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><blockquote>This is a blockquote block</blockquote><p>this is paragraph text</p></div>",
+        )
+
+
+
 
 
 

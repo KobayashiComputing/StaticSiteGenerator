@@ -136,8 +136,40 @@ def markdown_to_html_node(markdown):
                 div_children.append(LeafNode(tag="blockquote", value=html, props=None))
                 pass
             case BlockType.OLIST:
+                # ordered list will need one LeafNode() per list item
+                # first, get rid of the leading number and space at the beginning of each line
+                lines = block.splitlines()
+                new_lines = []
+                for line in lines:
+                    new_lines.append(f"<li>{line[line.index(' '):].replace('\n', ' ').strip()}</li>")
+                block = '\n'.join(new_lines)
+                # block parts get broken into leaf nodes...
+                # so first, break the block into TextNode()
+                node_list = text_to_text_nodes(block)
+                html = ""
+                for node in node_list:
+                    leaf_node = node.to_html_node()
+                    html += leaf_node.to_html().replace('\n','')
+                div_children.append(LeafNode(tag="ol", value=html, props=None))
+                pass
+        
                 pass
             case BlockType.ULIST:
+                # unordered list will need one LeafNode() per list item
+                # first, get rid of the "- " at the beginning of each line
+                lines = block.splitlines()
+                new_lines = []
+                for line in lines:
+                    new_lines.append(f"<li>{line[2:].replace('\n', ' ').strip()}</li>")
+                block = '\n'.join(new_lines)
+                # block parts get broken into leaf nodes...
+                # so first, break the block into TextNode()
+                node_list = text_to_text_nodes(block)
+                html = ""
+                for node in node_list:
+                    leaf_node = node.to_html_node()
+                    html += leaf_node.to_html().replace('\n','')
+                div_children.append(LeafNode(tag="ul", value=html, props=None))
                 pass
         
     html_tree = ParentNode(tag="div", children=div_children, props=None)

@@ -116,11 +116,24 @@ def markdown_to_html_node(markdown):
                 node = LeafNode(tag="code", value=block, props=None)
                 html = node.to_html()
                 div_children.append(LeafNode(tag="pre", value=html, props=None))
-
-
-
                 pass
             case BlockType.QUOTE:
+                # first, get rid of the ">" chars at the beginning of each line
+                lines = block.splitlines()
+                new_lines = []
+                for line in lines:
+                    new_lines.append(line[2:].strip())
+                block = ' '.join(new_lines)
+                # block quotes are like paragraphs in that linebreaks are ignored
+                block = block.replace('\n', ' ').strip()
+                # block parts get broken down into leaf nodes... (text nodes...)
+                # next, break the block of text into text nodes
+                node_list = text_to_text_nodes(block)
+                html = ""
+                for node in node_list:
+                    leaf_node = node.to_html_node()
+                    html += leaf_node.to_html()
+                div_children.append(LeafNode(tag="blockquote", value=html, props=None))
                 pass
             case BlockType.OLIST:
                 pass

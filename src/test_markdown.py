@@ -193,6 +193,22 @@ the **same** even with inline stuff
             "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
         )
 
+    def test_blockquote(self):
+        md = """> This is a block quote. It has some _italic_ text
+> and some **bold** text that, I think, should be handled. I'm not
+> sure if links and images should be handled. I'll write another
+> test case with a link and/or an image.
+
+"""
+
+        node = markdown_to_html_node(md)
+        html = ""
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><blockquote>This is a block quote. It has some <i>italic</i> text and some <b>bold</b> text that, I think, should be handled. I'm not sure if links and images should be handled. I'll write another test case with a link and/or an image.</blockquote></div>",
+        )
+
 
 
 if __name__ == "__main__":

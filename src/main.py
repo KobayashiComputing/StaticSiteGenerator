@@ -6,24 +6,44 @@ from textnode import *
 from htmlnode import *
 from extractors import *
 
-dir_level = -1
+def do_copy(source, destination):
+    entries = os.listdir(source)
+    for entry in entries:
+        path = os.path.join(source, entry)
+        if os.path.isdir(path):
+            dpath = os.path.join(destination, entry)
+            os.mkdir(dpath)
+            do_copy(path, dpath)
+        if os.path.isfile(path):
+            shutil.copy2(path, destination)
+    pass
+    return True
+
+
+def get_file_list(source):
+    filelist = []
+    entries = os.listdir(source)
+    for entry in entries:
+        path = os.path.join(source, entry)
+        if os.path.isdir(path):
+            filelist.extend(get_file_list(path))
+        if os.path.isfile(path):
+            filelist.append(path)
+    return filelist
+
 def clean_and_copy(source="./static", destination="./public"):
-    global dir_level
-    dir_level += 1
-
-    if dir_level == 0:
-        if os.path.exists(source):
-            print(f"Path '{source}' exists!")
-        else:
-            print(f"Path '{source}' does not exist!")
-            return False
-
-        if os.path.exists(destination):
-            shutil.rmtree(path=destination, ignore_errors=True)
-        os.mkdir(destination)
+    # check to make sure the source exists...
+    if not os.path.exists(source):
+        raise Exception("Source: {source} does not exist...")
     
-        entries = os.listdir(source)
-    
+    # delete and recreate the destination 
+    if os.path.exists(destination):
+        shutil.rmtree(path=destination, ignore_errors=True)
+    os.mkdir(destination)
+
+    # copy the files...
+    do_copy(source, destination)
+
     return True
 
 

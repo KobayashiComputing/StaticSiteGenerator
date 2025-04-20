@@ -20,17 +20,6 @@ def do_copy(source, destination):
     return True
 
 
-def get_file_list(source):
-    filelist = []
-    entries = os.listdir(source)
-    for entry in entries:
-        path = os.path.join(source, entry)
-        if os.path.isdir(path):
-            filelist.extend(get_file_list(path))
-        if os.path.isfile(path):
-            filelist.append(path)
-    return filelist
-
 def clean_and_copy(source="./static", destination="./public"):
     # check to make sure the source exists...
     if not os.path.exists(source):

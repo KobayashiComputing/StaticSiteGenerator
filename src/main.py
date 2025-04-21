@@ -35,11 +35,14 @@ def clean_and_copy(source="./static", destination="./public"):
 
     return True
 
-
+def generate_page(from_path, template_path, dest_path):
+    print(f"Generating page from {from_path} to {dest_path} using {template_path}...")
+    page_title = ""
+    return page_title
 
 def main():
     print("Welcome to the Static Site Generator!")
     result = clean_and_copy("./static", "./public")
-    print(f"Result is '{result}'!")
-
+    result = generate_page("./content/index.md", "./template.html", "./public/index.html")
+    
 main()

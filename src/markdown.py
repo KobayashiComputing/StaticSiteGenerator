@@ -173,8 +173,18 @@ def markdown_to_html_node(markdown):
                 pass
         
     html_tree = ParentNode(tag="div", children=div_children, props=None)
-
-
     pass
-
     return html_tree
+
+def extract_title(markdown):
+    lines = (markdown.strip()).splitlines()
+    title = ""
+    for line in lines:
+        if line[:2] == "# ":
+            title = line[2:].strip()
+            break
+    if title == "":
+        raise Exception("No main title found in markdown")
+    else:
+        return title
+    

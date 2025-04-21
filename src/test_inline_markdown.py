@@ -4,7 +4,7 @@ from textnode import (
 )
 
 from textnode import TextNode, TextType
-
+from markdown import extract_title
 
 class TestInlineMarkdown(unittest.TestCase):
     def test_delim_bold(self):
@@ -86,6 +86,25 @@ class TestInlineMarkdown(unittest.TestCase):
             new_nodes,
         )
 
+    def test_title_1(self):
+        md = "# Title"
+        self.assertEqual("Title", extract_title(md))
+
+    def test_title_2(self):
+        md = "\n\n# Title"
+        self.assertEqual("Title", extract_title(md))
+
+    def test_title_3(self):
+        md = "\n# Title\n\n## Heading 2\n\n### Heading 3"
+        self.assertEqual("Title", extract_title(md))
+
+    def test_title_4(self):
+        md = "# Title\n\n## Heading 2\n\n## Heading 3"
+        self.assertEqual("Title", extract_title(md))
+    
+    def test_title_5(self):
+        md = "### Heading, but not title\n\n# Title"
+        self.assertEqual("Title", extract_title(md))
 
 if __name__ == "__main__":
     unittest.main()

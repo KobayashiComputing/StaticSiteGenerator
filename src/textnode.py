@@ -38,7 +38,7 @@ class TextNode():
             case TextType.LINK:
                 return LeafNode(tag='a', value=self.text, props={"href": self.url})
             case TextType.IMAGE:
-                return LeafNode(tag='img', value='', props={"src": self.url, "alt": self.value})
+                return LeafNode(tag='img', value='', props={"src": self.url, "alt": self.text})
             case _:
                 raise Exception("unknown text type")
 

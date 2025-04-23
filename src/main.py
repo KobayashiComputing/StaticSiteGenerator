@@ -1,5 +1,6 @@
 import os.path
 import shutil
+from sys import argv
 
 from textnode import *
 from htmlnode import *
@@ -31,7 +32,7 @@ def do_copy(source, destination):
     return True
 
 
-def clean_and_copy(source="./static", destination="./public"):
+def clean_and_copy(source="./static", destination="./docs"):
     # check to make sure the source exists...
     if not os.path.exists(source):
         raise Exception(f"Source: '{source}' does not exist...")
@@ -46,7 +47,7 @@ def clean_and_copy(source="./static", destination="./public"):
 
     return True
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}...")
     if not os.path.exists(from_path):
         print(f"Input file '{from_path}' does not seem to exist...")
@@ -69,6 +70,9 @@ def generate_page(from_path, template_path, dest_path):
     template = template.replace("{{ Title }}", page_title)
     page_html = markdown_to_html_node(md).to_html()
     template = template.replace("{{ Content }}", page_html)
+    template = template.replace('href="/', f'href="{basepath}')
+    template = template.replace('src="/', f'src="{basepath}')
+
 
     with open(dest_path, mode="w") as f:
         f.write(f"{template}")
@@ -89,12 +93,13 @@ def create_dir_path(path):
     pass
     return True
 
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, basepath):
     files = get_file_list(dir_path_content)
     for file in files:
-        dfile = file.replace("./content", "./public", 1)
+        # dfile = file.replace("./content", "./docs", 1)
+        dfile = file.replace(dir_path_content, dest_dir_path, 1)
         dfile = dfile.replace(".md", ".html", 1)
-        generate_page(file, template_path, dfile)
+        generate_page(file, template_path, dfile, basepath)
         pass
     pass
     return True
@@ -103,12 +108,17 @@ def main():
     # Welcome message...
     print("Welcome to the Static Site Generator!")
 
+    # command line parameters (arguments (sys.argv))?
+    basepath = "/"
+    if len(argv) > 1:
+        basepath = argv[1]
+    
     # Clean out and populate the destination directory...
-    result = clean_and_copy("./static", "./public")
+    result = clean_and_copy("./static", "./docs")
 
     # Generate the page(s)...
-    result = generate_pages_recursive("./content", "./template.html", "./public")
-    # result = generate_page("./content/index.md", "./template.html", "./public/index.html")
+    result = generate_pages_recursive("./content", "./template.html", "./docs", basepath)
+    # result = generate_page("./content/index.md", "./template.html", "./docs/index.html")
     
     print(f"Finished creating HTML page for '{result}'!")
 main()

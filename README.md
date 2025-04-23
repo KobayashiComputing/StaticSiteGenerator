@@ -9,3 +9,6 @@ python3 -m http.server 8888
 ## Bootdev CLI Details
 * Default Base URL: http://localhost:8888
 * Optionally configure your CLI to override the default base URL by running bootdev configure base_url <url>
+
+## Completed Site
+View the [completed](https://kobayashicomputing.github.io/StaticSiteGenerator/) site.

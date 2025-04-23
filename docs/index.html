@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<style>
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
+.bgimg {
+  background-image: url('gerold-hinzen-VCnw5s0Y9Ew-unsplash.jpg');
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  color: white;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 25px;
+}
+
+.topleft {
+  position: absolute;
+  top: 0;
+  left: 16px;
+}
+
+.bottomleft {
+  position: absolute;
+  bottom: 0;
+  left: 16px;
+}
+
+.middle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+hr {
+  margin: auto;
+  width: 40%;
+}
+</style>
+<body>
+
+<div class="bgimg">
+  <div class="topleft">
+    <p id="pageURL"></p>
+  </div>
+  <div class="middle">
+    <h1>UNDER CONSTRUCTION</h1>
+    <hr>
+    <p>Check again soon!</p>
+  </div>
+  <div class="bottomleft">
+    <p>Photograph by <a style=
+      "background-color:black;
+      color:white;
+      text-decoration:none;
+      padding:4px 6px;
+      font-family:-apple-system, BlinkMacSystemFont, &quot;San Francisco&quot;, &quot;Helvetica Neue&quot;, Helvetica, Ubuntu, Roboto, Noto, &quot;Segoe UI&quot;, Arial, sans-serif;
+      font-size:12px;
+      font-weight:bold;
+      line-height:1.2;
+      display:inline-block;
+      border-radius:3px" href="https://unsplash.com/@geroldhinzen?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer" title="Download free do whatever you want high-resolution photos from Gerold Hinzen"><span style="display:inline-block;padding:2px 3px"><svg xmlns="http://www.w3.org/2000/svg" style="height:12px;width:auto;position:relative;vertical-align:middle;top:-2px;fill:white" viewBox="0 0 32 32"><title>unsplash-logo</title><path d="M10 9V0h12v9H10zm12 5h10v18H0V14h10v9h12v-9z"></path></svg></span><span style="display:inline-block;padding:2px 3px">Gerold Hinzen</span></a></p>
+  </div>
+</div>
+
+</body>
+<script type="application/javascript">
+  document.getElementById("pageURL").innerHTML = window.location.href;
+</script>
+
+</html>
